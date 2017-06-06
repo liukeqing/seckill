@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-//@RequestMapping("/seckill")
+@RequestMapping("/seckill")
 public class SeckillController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -84,7 +84,9 @@ public class SeckillController {
 			return new SeckillResult<SeckillExecution>(false,"未注册");
 		}
 		try {
-			SeckillExecution execution = seckillService.executeSeckill(seckillId, userPhone, md5);
+			//SeckillExecution execution = seckillService.executeSeckill(seckillId, userPhone, md5);
+			//改用存储过程执行秒杀
+			SeckillExecution execution = seckillService.executeSeckillByProcedure(seckillId, userPhone, md5);
 			return new SeckillResult<SeckillExecution>(true,execution);
 		}  catch (RepeatKillException e) {
 			SeckillExecution execution = new SeckillExecution(seckillId,SeckillStatEnum.REPEAT_KILL);

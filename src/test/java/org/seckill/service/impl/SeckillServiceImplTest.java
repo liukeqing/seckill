@@ -1,7 +1,5 @@
 package org.seckill.service.impl;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -10,7 +8,6 @@ import org.seckill.dto.Exposer;
 import org.seckill.dto.SeckillExecution;
 import org.seckill.entity.Seckill;
 import org.seckill.exception.RepeatKillException;
-import org.seckill.exception.SeckillCloseException;
 import org.seckill.exception.SeckillException;
 import org.seckill.service.SeckillService;
 import org.slf4j.Logger;
@@ -60,6 +57,17 @@ public class SeckillServiceImplTest {
 		}else{
 			//秒杀未开启
 			logger.warn("exposer={}",exposer);
+		}
+	}
+	@Test
+	public void executeSeckillProcedure(){
+		long seckillId =1003;
+		long phone = 13552198787L;
+		Exposer exposer = seckillService.exportSeckillUrl(seckillId);
+		if(exposer.isExposed()){
+			String md5 = exposer.getMd5();
+			SeckillExecution execution = seckillService.executeSeckillByProcedure(seckillId, phone, md5);
+			logger.info(execution.getStateInfo());
 		}
 	}
 	
